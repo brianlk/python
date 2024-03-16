@@ -29,8 +29,8 @@ for t in a_tags:
         with open(f'{name}.mp3', 'wb') as output:
             output.write(mp3file.read())
         count += 1
-        # if count > 5:
-        #     break
+        if count > 5:
+            break
 
 """
 https://hec.org.hk/mp3.php?mp3=100/%30%33%2d%31%39%39%30%2d%30%30%32%37%20%ae%e0%ab%65%c0%71%b7%51%20%31%30%31%2e%6d%70%33&prog=mp3&file=03-1990-0027%20%E6%A1%8C%E5%89%8D%E9%BB%98%E6%83%B3%20101.mp3&path=100
