@@ -20,7 +20,7 @@ def get_api(url: str):
     )
 
     # Print xml
-    return private_url_response_xml.text
+    return private_url_response_xml
 
 
 def post_api(url: str):
@@ -69,13 +69,15 @@ def main():
     args = parser.parse_args()
     vm_name = args.vm_name
     action = args.action
-    xml_string = get_api("https://manager2.oc.example/ovirt-engine/api/vms")
-    root = ET.ElementTree(ET.fromstring(xml_string))
-    all_vm = root.findall('vm')
-    vid = None
-    for v in all_vm:
-        if v.find('name').text == vm_name:
-            vid = v.get('id')
+    xml_string = get_api("https://manager2.oc.example/ovirt-engine/api/storagedomains/ac7623af-0409-473d-a2aa-486f43bf26d0/disksnapshots")
+    print(xml_string.text)
+
+    # root = ET.ElementTree(ET.fromstring(xml_string))
+    # all_vm = root.findall('vm')
+    # vid = None
+    # for v in all_vm:
+    #     if v.find('name').text == vm_name:
+    #         vid = v.get('id')
             
     # shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/shutdown")
 
@@ -85,9 +87,9 @@ def main():
 
     # print(shutdown_action)
 
-    take_snapshot_action = snapshot_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/snapshots")
-    print(take_snapshot_action.status_code)
-    print(take_snapshot_action.text)
+    # take_snapshot_action = snapshot_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/snapshots")
+    # print(take_snapshot_action.status_code)
+    # print(take_snapshot_action.text)
     
     
 if __name__ == "__main__":
