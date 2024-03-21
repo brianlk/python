@@ -1,1 +1,1 @@
-# Script to back virtual machine in ovirt platform
+# Script to backup virtual machine in ovirt platform
