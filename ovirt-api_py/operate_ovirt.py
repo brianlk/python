@@ -4,6 +4,7 @@
 
 
 import argparse
+import json
 import requests
 import xml.etree.ElementTree as ET
 
@@ -32,14 +33,14 @@ def get_api(url: str):
 
 def post_api(url: str):
     ovirt_url = url
-    username = USERNAME
-    password = PASSWORD
-    headers = {'Content-Type': 'application/xml'}
+    # username = USERNAME
+    # password = PASSWORD
+    # headers = {'Content-Type': 'application/xml'}
     xml = """<?xml version='1.0' encoding='utf-8'?>
     <action/>"""
     private_url_response_xml = requests.post(
         url=ovirt_url,
-        auth=HTTPBasicAuth(username, password),
+        # auth=HTTPBasicAuth(username, password),
         verify="ca.pem",
         headers=headers,
         data=xml
@@ -104,4 +105,35 @@ def main():
     
     
 if __name__ == "__main__":
+    headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+               }
+    
+    params = {
+        "grant_type": "password",
+        "scope": "ovirt-app-api",
+        "username": "admin@internal",
+        "password": "password"
+    }
+    private_url_response_xml = requests.post(
+        url='https://manager2.oc.example/ovirt-engine/sso/oauth/token',
+        params=params,
+        verify="ca.pem",
+        headers=headers
+    )
+    y = json.loads(private_url_response_xml.text)
+    token = y['access_token']
+    # print(token)
+    headers = {
+        'Authorization': f"Bearer {token}",
+        'Content-Type': 'application/xml'
+    }
+    private_url_response_xml = requests.get(
+        url='https://manager2.oc.example/ovirt-engine/api/vms',
+        verify="ca.pem",
+        headers=headers
+    )
+    print(private_url_response_xml.text)
+
     main()
