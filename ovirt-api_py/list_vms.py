@@ -5,26 +5,59 @@ import xml.etree.ElementTree as ET
 
 from requests.auth import HTTPBasicAuth
 
+vm_name = "ol7a"
 
-def call_api(object_type: str):
-    ovirt_url = f"https://manager2.oc.example/ovirt-engine/api/{object_type}"
+def get_api(url: str):
+    ovirt_url = url
     username = "admin@internal"
     password = "password"
-
+    headers = {'Content-Type': 'application/xml'} 
     private_url_response_xml = requests.get(
         url=ovirt_url,
         auth=HTTPBasicAuth(username, password),
-        verify="ca.pem"
+        verify="ca.pem",
+        headers=headers
     )
 
     # Print xml
     return private_url_response_xml.text
 
 
-xml_string = call_api("vms")
+def post_api(url: str):
+    ovirt_url = url
+    username = "admin@internal"
+    password = "password"
+    headers = {'Content-Type': 'application/xml'}
+    xml = """<?xml version='1.0' encoding='utf-8'?>
+    <action/>"""
+    private_url_response_xml = requests.post(
+        url=ovirt_url,
+        auth=HTTPBasicAuth(username, password),
+        verify="ca.pem",
+        headers=headers,
+        data=xml
+    )
+
+    # Print xml
+    return private_url_response_xml.status_code
+
+
+xml_string = get_api("https://manager2.oc.example/ovirt-engine/api/vms")
 
 root = ET.ElementTree(ET.fromstring(xml_string))
 
-xxx = root.findall('vm')
+all_vm = root.findall('vm')
 
-print(xxx[0].find('name').text)
+vid = None
+
+for v in all_vm:
+    if v.find('name').text == vm_name:
+        vid = v.get('id')
+        
+shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/shutdown")
+
+print(shutdown_action)
+
+shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/start")
+
+print(shutdown_action)
