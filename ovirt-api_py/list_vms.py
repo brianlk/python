@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import requests
+import xml.etree.ElementTree as ET
+
 from requests.auth import HTTPBasicAuth
 
 
@@ -19,6 +21,10 @@ def call_api(object_type: str):
     return private_url_response_xml.text
 
 
-x = call_api("datacenters")
+xml_string = call_api("vms")
 
-print(x)
+root = ET.ElementTree(ET.fromstring(xml_string))
+
+xxx = root.findall('vm')
+
+print(xxx[0].find('name').text)
