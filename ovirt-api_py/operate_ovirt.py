@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 
 from requests.auth import HTTPBasicAuth
 
-vm_name = "ol7a"
 
 def get_api(url: str):
     ovirt_url = url
@@ -62,26 +61,34 @@ def snapshot_api(url: str):
     # Print xml
     return private_url_response_xml
 
-xml_string = get_api("https://manager2.oc.example/ovirt-engine/api/vms")
 
-root = ET.ElementTree(ET.fromstring(xml_string))
+def main():
+    parser = argparse.ArgumentParser(description='Operate oVirt')
+    parser.add_argument('--vm_name', required=True)
+    parser.add_argument('--action', required=True)
+    args = parser.parse_args()
+    vm_name = args.vm_name
+    action = args.action
+    xml_string = get_api("https://manager2.oc.example/ovirt-engine/api/vms")
+    root = ET.ElementTree(ET.fromstring(xml_string))
+    all_vm = root.findall('vm')
+    vid = None
+    for v in all_vm:
+        if v.find('name').text == vm_name:
+            vid = v.get('id')
+            
+    # shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/shutdown")
 
-all_vm = root.findall('vm')
+    # print(shutdown_action)
 
-vid = None
+    # shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/start")
 
-for v in all_vm:
-    if v.find('name').text == vm_name:
-        vid = v.get('id')
-        
-# shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/shutdown")
+    # print(shutdown_action)
 
-# print(shutdown_action)
-
-# shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/start")
-
-# print(shutdown_action)
-
-take_snapshot_action = snapshot_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/snapshots")
-print(take_snapshot_action.status_code)
-print(take_snapshot_action.text)
+    take_snapshot_action = snapshot_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/snapshots")
+    print(take_snapshot_action.status_code)
+    print(take_snapshot_action.text)
+    
+    
+if __name__ == "__main__":
+    main()
