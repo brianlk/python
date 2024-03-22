@@ -23,8 +23,12 @@ def get_url_xml(vid, action):
         "suspend": f"{XML_HEADER}<action/>",
     }
     
-    return url_map[action], xml_map[action]
-
+    try:
+        return url_map[action], xml_map[action]
+    except KeyError as e:
+        print(f"\nError: exception happened - {str(e)}\n")
+        exit()
+        
 
 def get_api_url():
     return f"https://{os.environ.get('OLVM_FQDN')}/ovirt-engine/api"
