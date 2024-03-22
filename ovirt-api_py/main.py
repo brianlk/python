@@ -8,13 +8,9 @@ import json
 import requests
 import xml.etree.ElementTree as ET
 from auth import Auth
-from maps import get_url_xml
+from maps import get_url_xml, API_URL
 
 from requests.auth import HTTPBasicAuth
-
-USERNAME = "admin@internal"
-PASSWORD = "password"
-API_URL = "https://manager2.oc.example/ovirt-engine/api"
 
 
 def get_api(url: str, headers):
@@ -39,7 +35,7 @@ def post_api(url: str, xml,  headers):
     )
 
     # Print xml
-    return private_url_response_xml.status_code
+    return private_url_response_xml
 
 
 def find_vm(vm_name: str, headers):
@@ -51,6 +47,7 @@ def find_vm(vm_name: str, headers):
         if v.find('name').text == vm_name:
             vid = v.get('id')
             return vid
+    raise Exception(f"Error: VM {vm_name} not found.")
 
 
 def main():
@@ -60,7 +57,6 @@ def main():
     args = parser.parse_args()
     vm_name = args.vm_name
     action = args.action
-    
     
     acces_token = Auth.authenticate()
     headers = {
