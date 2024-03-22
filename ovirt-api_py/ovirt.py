@@ -2,7 +2,7 @@
 import xml.etree.ElementTree as ET
 import requests
 
-from auth import Auth
+# from auth import Auth
 from maps import get_api_url
 
 
@@ -19,7 +19,7 @@ class oVirtVM:
         
     def find_vm(self):
         xml_string = self.get_api(f"{get_api_url()}/vms")
-        root = ET.ElementTree(ET.fromstring(xml_string))
+        root = ET.ElementTree(ET.fromstring(xml_string.text))
         all_vm = root.findall('vm')
         vid = None
         for v in all_vm:
@@ -41,11 +41,13 @@ class oVirtVM:
                 "case_sensitive": "true"
                 }
             )
+        # print("bbbbbbbbbbb")
+        # print(private_url_response_xml)
         # TODO
         # if private_url_response_xml.status_code == 401:
-        #     self.refresh_token()
+        #     Auth.refresh_token()
         # Print xml
-        return private_url_response_xml.text
+        return private_url_response_xml
     
     
     def post_api(self, url: str, xml):

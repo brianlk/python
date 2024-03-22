@@ -28,13 +28,13 @@ def main():
     action = args.action
     # Get the oAuth access token
     acces_token = Auth.authenticate()
-    v = oVirtVM(vm_name, acces_token)
-    vid = v.find_vm()       
-    (url, xml) = get_url_xml(vid, action)
-    action_result = v.post_api(url, xml)
-    print(f"http status code: {action_result.status_code}")
-    if args.debug:
-        print(action_result.text)
+    # v = oVirtVM(vm_name, acces_token)
+    # vid = v.find_vm()       
+    # (url, xml) = get_url_xml(vid, action)
+    # action_result = v.post_api(url, xml)
+    # print(f"http status code: {action_result.status_code}")
+    # if args.debug:
+    #     print(action_result.text)
   
     
 if __name__ == "__main__":

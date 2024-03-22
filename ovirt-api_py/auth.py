@@ -5,6 +5,8 @@ import requests
 import os.path
 import time
 
+from ovirt import oVirtVM
+from maps import get_api_url
 
 HEADERS = {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -53,10 +55,13 @@ class Auth:
             delta = json_expiry_time - int(time.time())
             if delta < 0:
                 return None
+            if not Auth.probe_token(d['access_token']):
+                return None
             token = d["access_token"]
          
         return token
-            
+    
+    
     @staticmethod
     def _access_token_save(token: str):
         with open(Auth.file_path, 'w') as f:
@@ -64,6 +69,10 @@ class Auth:
             
        
     @staticmethod  
-    def refresh_token(self):
-        os.remove(Auth.file_path)
-        return Auth.authenticate()
+    def probe_token(token):
+        v = oVirtVM("dummy", token)
+        probe_result = v.get_api(f"{get_api_url()}/vms")
+        if probe_result.status_code == 401:
+            return None
+        return True
+        
