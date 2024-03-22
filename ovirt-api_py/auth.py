@@ -55,8 +55,8 @@ class Auth:
             delta = json_expiry_time - int(time.time())
             if delta < 0:
                 return None
-            if not Auth.probe_token(d['access_token']):
-                return None
+            # if not Auth.probe_token(d['access_token']):
+            #     return None
             token = d["access_token"]
          
         return token

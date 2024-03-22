@@ -41,8 +41,7 @@ class oVirtVM:
                 "case_sensitive": "true"
                 }
             )
-        # print("bbbbbbbbbbb")
-        # print(private_url_response_xml)
+
         # TODO
         # if private_url_response_xml.status_code == 401:
         #     Auth.refresh_token()
