@@ -10,6 +10,8 @@ from maps import get_url_xml
 from ovirt import oVirt
 
 
+MANAGER_FQDN = "manager2.oc.example"
+
 def main():
     # Open arguement choices file
     with open("choices.json") as c:
@@ -26,7 +28,7 @@ def main():
     vid = v.find_vm()       
     (url, xml) = get_url_xml(vid, action)
     action_result = v.post_api(url, xml)
-    print(action_result.text)
+    print(action_result.status_code)
   
     
 if __name__ == "__main__":
