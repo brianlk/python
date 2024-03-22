@@ -2,6 +2,7 @@ import json
 import requests
 import os.path
 
+
 FILE_PATH = '/tmp/access_token.ovirt'
 
 HEADERS = {
@@ -32,7 +33,8 @@ class Auth:
             )
             j = json.loads(oauth_output.text)
             token = j['access_token']
-            Auth._access_token_write(token)
+            Auth._access_token_save(token)
+            print(j)
             
         return token
     
@@ -41,8 +43,10 @@ class Auth:
         if os.path.isfile(FILE_PATH):
             with open(FILE_PATH) as f:
                 return f.readline()
+        
+        return None
             
     @staticmethod
-    def _access_token_write(token: str):
+    def _access_token_save(token: str):
         with open(FILE_PATH, 'w') as f:
             f.write(token)
