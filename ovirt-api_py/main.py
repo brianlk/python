@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description='Operate oVirt')
     parser.add_argument('--vm_name', required=True)
     parser.add_argument('--action', required=True, choices=choices['actions'])
+    parser.add_argument('--debug', required=False)
     args = parser.parse_args()
     vm_name = args.vm_name
     action = args.action
@@ -31,7 +32,9 @@ def main():
     vid = v.find_vm()       
     (url, xml) = get_url_xml(vid, action)
     action_result = v.post_api(url, xml)
-    print(action_result.status_code)
+    print(f"http status code: {action_result.status_code}")
+    if args.debug:
+        print(action_result.text)
   
     
 if __name__ == "__main__":
