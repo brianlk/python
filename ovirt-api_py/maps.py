@@ -1,11 +1,12 @@
 
 import os
 
-API_URL = f"https://{os.getenv['MANAGER_FQDN']}/ovirt-engine/api"
+
 XML_HEADER = "<?xml version='1.0' encoding='utf-8'?>"
 
+
 def get_url_xml(vid, action):
-    api_url = f"https://{os.getenv['MANAGER_FQDN']}/ovirt-engine/api"
+    api_url = get_api_url()
     url_map = {
         "shutdown": f"{api_url}/vms/{vid}/shutdown",
         "start": f"{api_url}/vms/{vid}/start",
@@ -23,3 +24,7 @@ def get_url_xml(vid, action):
     }
     
     return url_map[action], xml_map[action]
+
+
+def get_api_url():
+    return f"https://{os.environ.get('MANAGER_FQDN')}/ovirt-engine/api"

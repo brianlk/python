@@ -5,8 +5,6 @@ import os.path
 import time
 
 
-# FILE_PATH = f'/tmp/access_token_{os.getenv['MANAGER_FQDN']}.ovirt'
-
 HEADERS = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Accept': 'application/json'
@@ -19,7 +17,6 @@ PARAMS = {
     "password": "password"
 }
 
-# OAUTH_URL = f'https://{os.getenv['MANAGER_FQDN']}/ovirt-engine/sso/oauth/token'
 
 class Auth:
     

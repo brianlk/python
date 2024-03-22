@@ -1,11 +1,13 @@
 
-from maps import API_URL
 import xml.etree.ElementTree as ET
-
+import os
 import requests
 import urllib.parse
 
-class oVirt:
+from maps import get_api_url
+
+
+class oVirtVM:
     
     def __init__(self, vm_name, acces_token):
         self.vm_name = vm_name
@@ -17,7 +19,7 @@ class oVirt:
         
         
     def find_vm(self):
-        xml_string = self.get_api(f"{API_URL}/vms")
+        xml_string = self.get_api(f"{get_api_url()}/vms")
         root = ET.ElementTree(ET.fromstring(xml_string))
         all_vm = root.findall('vm')
         vid = None

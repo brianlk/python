@@ -1,7 +1,10 @@
-[
-    "start",
-    "shutdown",
-    "snapshot",
-    "poweroff",
-    "suspend"
-]
+{
+    "_comment": "Command argument action options",
+    "actions": [
+        "start",
+        "shutdown",
+        "snapshot",
+        "poweroff",
+        "suspend"
+    ]
+}

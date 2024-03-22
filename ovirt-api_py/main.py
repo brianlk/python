@@ -7,10 +7,8 @@ import json
 
 from auth import Auth
 from maps import get_url_xml
-from ovirt import oVirt
+from ovirt import oVirtVM
 
-
-MANAGER_FQDN = "manager2.oc.example"
 
 def main():
     # Open arguement choices file
@@ -18,13 +16,13 @@ def main():
         choices = json.load(c)
     parser = argparse.ArgumentParser(description='Operate oVirt')
     parser.add_argument('--vm_name', required=True)
-    parser.add_argument('--action', required=True, choices=choices)
+    parser.add_argument('--action', required=True, choices=choices['actions'])
     args = parser.parse_args()
     vm_name = args.vm_name
     action = args.action
     # Get the oAuth access token
     acces_token = Auth.authenticate()
-    v = oVirt(vm_name, acces_token)
+    v = oVirtVM(vm_name, acces_token)
     vid = v.find_vm()       
     (url, xml) = get_url_xml(vid, action)
     action_result = v.post_api(url, xml)
