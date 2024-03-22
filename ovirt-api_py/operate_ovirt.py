@@ -8,6 +8,7 @@ import json
 import requests
 import xml.etree.ElementTree as ET
 from auth import Auth
+from url_map import get_url_params
 
 from requests.auth import HTTPBasicAuth
 
@@ -34,8 +35,7 @@ def get_api(url: str):
 
 def post_api(url: str, headers):
     ovirt_url = url
-    xml = """<?xml version='1.0' encoding='utf-8'?>
-    <action/>"""
+    xml = """<?xml version='1.0' encoding='utf-8'?><action/>"""
     private_url_response_xml = requests.post(
         url=ovirt_url,
         verify="ca.pem",
@@ -50,8 +50,7 @@ def post_api(url: str, headers):
 
 def snapshot_api(url: str, headers):
     ovirt_url = url
-    xml = """<?xml version='1.0' encoding='utf-8'?>
-    <snapshot><description>vm snapshot</description></snapshot>"""
+    xml = """<?xml version='1.0' encoding='utf-8'?><snapshot><description>vm snapshot</description></snapshot>"""
     private_url_response_xml = requests.post(
         url=ovirt_url,
         verify="ca.pem",
@@ -90,13 +89,8 @@ def main():
     }
 
     vid = find_vm(vm_name)         
-    URL_MAP = {
-        "shutdown": f"{API_URL}/vms/{vid}/shutdown",
-        "start": f"{API_URL}/vms/{vid}/start",
-        "snapshot": f"{API_URL}/vms/{vid}/snapshots"
-    }
-            
-    shutdown_action = post_api(URL_MAP[action], headers)
+    
+    shutdown_action = snapshot_api(get_url_params(vid, action), headers)
 
     print(shutdown_action)
   
