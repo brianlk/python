@@ -2,6 +2,7 @@
 import xml.etree.ElementTree as ET
 import requests
 
+from auth import Auth
 from maps import get_api_url
 
 
@@ -40,6 +41,9 @@ class oVirtVM:
                 "case_sensitive": "true"
                 }
             )
+        # TODO
+        # if private_url_response_xml.status_code == 401:
+        #     self.refresh_token()
         # Print xml
         return private_url_response_xml.text
     
@@ -55,3 +59,4 @@ class oVirtVM:
 
         # Print xml
         return private_url_response_xml
+    

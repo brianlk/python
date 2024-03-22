@@ -61,3 +61,9 @@ class Auth:
     def _access_token_save(token: str):
         with open(Auth.file_path, 'w') as f:
             f.write(token)
+            
+       
+    @staticmethod  
+    def refresh_token(self):
+        os.remove(Auth.file_path)
+        return Auth.authenticate()
