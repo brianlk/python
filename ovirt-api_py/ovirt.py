@@ -35,7 +35,9 @@ class oVirt:
             url=ovirt_url,
             verify="ca.pem",
             headers=self.auth_headers,
-            params={"search": f"name={self.vm_name}"} # url encode is done by python library  
+            params={"search": f"name={self.vm_name}", # url encode is done by python library
+                    "case_sensitive": "true"
+                    }  
         )
         # Print xml
         return private_url_response_xml.text
