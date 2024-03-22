@@ -1,6 +1,7 @@
 import json
 import requests
 import os.path
+import time
 
 
 FILE_PATH = '/tmp/access_token.ovirt'
@@ -31,20 +32,27 @@ class Auth:
                 verify="ca.pem",
                 headers=HEADERS
             )
-            j = json.loads(oauth_output.text)
-            token = j['access_token']
-            Auth._access_token_save(token)
-            print(j)
+            Auth._access_token_save(oauth_output.text)
+            x = json.loads(oauth_output.text)
+            token = x["access_token"]
             
         return token
     
     @staticmethod
     def _access_token_check():
+        token = None
         if os.path.isfile(FILE_PATH):
             with open(FILE_PATH) as f:
-                return f.readline()
-        
-        return None
+                token = f.readline()
+            d = json.loads(token)
+            json_expiry_time = int(d["exp"]) / 1000
+            # Check if the access token is expired
+            delta = json_expiry_time - int(time.time())
+            if delta < 0:
+                return None
+            token = d["access_token"]
+         
+        return token
             
     @staticmethod
     def _access_token_save(token: str):
