@@ -7,6 +7,7 @@ import argparse
 import json
 import requests
 import xml.etree.ElementTree as ET
+from auth import Auth
 
 from requests.auth import HTTPBasicAuth
 
@@ -105,28 +106,10 @@ def main():
     
     
 if __name__ == "__main__":
+
+    acces_token = Auth.authentication()
     headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
-               }
-    
-    params = {
-        "grant_type": "password",
-        "scope": "ovirt-app-api",
-        "username": "admin@internal",
-        "password": "password"
-    }
-    private_url_response_xml = requests.post(
-        url='https://manager2.oc.example/ovirt-engine/sso/oauth/token',
-        params=params,
-        verify="ca.pem",
-        headers=headers
-    )
-    y = json.loads(private_url_response_xml.text)
-    token = y['access_token']
-    # print(token)
-    headers = {
-        'Authorization': f"Bearer {token}",
+        'Authorization': f"Bearer {acces_token}",
         'Content-Type': 'application/xml'
     }
     private_url_response_xml = requests.get(
@@ -135,5 +118,5 @@ if __name__ == "__main__":
         headers=headers
     )
     print(private_url_response_xml.text)
-
+    exit()
     main()
