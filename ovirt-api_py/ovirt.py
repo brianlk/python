@@ -3,6 +3,7 @@ from maps import API_URL
 import xml.etree.ElementTree as ET
 
 import requests
+import urllib.parse
 
 class oVirt:
     
@@ -10,7 +11,8 @@ class oVirt:
         self.vm_name = vm_name
         self.auth_headers = {
             'Authorization': f"Bearer {acces_token}",
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/xml',
+            'Accept': 'application/xml'
         }
         
         
@@ -23,7 +25,8 @@ class oVirt:
             if v.find('name').text == self.vm_name:
                 vid = v.get('id')
                 return vid
-        raise Exception(f"Error: VM {self.vm_name} not found.")
+        if not vid:
+            raise Exception(f"Error: VM {self.vm_name} not found.")
     
     
     def get_api(self, url: str):
@@ -31,7 +34,8 @@ class oVirt:
         private_url_response_xml = requests.get(
             url=ovirt_url,
             verify="ca.pem",
-            headers=self.auth_headers
+            headers=self.auth_headers,
+            params={"search": f"name={self.vm_name}"} # url encode is done by python library  
         )
         # Print xml
         return private_url_response_xml.text

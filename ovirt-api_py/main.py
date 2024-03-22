@@ -19,7 +19,7 @@ def main():
     
     acces_token = Auth.authenticate()
     v = oVirt(vm_name, acces_token)
-    vid = v.find_vm()         
+    vid = v.find_vm()       
     (url, xml) = get_url_xml(vid, action)
     action_result = v.post_api(url, xml)
     print(action_result)
