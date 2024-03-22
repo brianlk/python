@@ -32,16 +32,12 @@ def get_api(url: str):
     return private_url_response_xml.text
 
 
-def post_api(url: str):
+def post_api(url: str, headers):
     ovirt_url = url
-    # username = USERNAME
-    # password = PASSWORD
-    # headers = {'Content-Type': 'application/xml'}
     xml = """<?xml version='1.0' encoding='utf-8'?>
     <action/>"""
     private_url_response_xml = requests.post(
         url=ovirt_url,
-        # auth=HTTPBasicAuth(username, password),
         verify="ca.pem",
         headers=headers,
         data=xml
@@ -52,16 +48,12 @@ def post_api(url: str):
 
 
 
-def snapshot_api(url: str):
+def snapshot_api(url: str, headers):
     ovirt_url = url
-    username = USERNAME
-    password = PASSWORD
-    headers = {'Content-Type': 'application/xml'}
     xml = """<?xml version='1.0' encoding='utf-8'?>
     <snapshot><description>vm snapshot</description></snapshot>"""
     private_url_response_xml = requests.post(
         url=ovirt_url,
-        auth=HTTPBasicAuth(username, password),
         verify="ca.pem",
         headers=headers,
         data=xml
@@ -104,18 +96,10 @@ def main():
         "snapshot": f"{API_URL}/vms/{vid}/snapshots"
     }
             
-    shutdown_action = post_api(URL_MAP[action])
+    shutdown_action = post_api(URL_MAP[action], headers)
 
     print(shutdown_action)
-
-    # shutdown_action = post_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/start")
-
-    # print(shutdown_action)
-
-    # take_snapshot_action = snapshot_api(f"https://manager2.oc.example/ovirt-engine/api/vms/{vid}/snapshots")
-    # print(take_snapshot_action.status_code)
-    # print(take_snapshot_action.text)
-    
+  
     
 if __name__ == "__main__":
     main()
