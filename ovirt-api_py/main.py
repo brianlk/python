@@ -8,7 +8,7 @@ import json
 import requests
 import xml.etree.ElementTree as ET
 from auth import Auth
-from url_map import get_url_params
+from maps import get_url_xml
 
 from requests.auth import HTTPBasicAuth
 
@@ -17,14 +17,10 @@ PASSWORD = "password"
 API_URL = "https://manager2.oc.example/ovirt-engine/api"
 
 
-def get_api(url: str):
+def get_api(url: str, headers):
     ovirt_url = url
-    username = USERNAME
-    password = PASSWORD
-    headers = {'Content-Type': 'application/xml'} 
     private_url_response_xml = requests.get(
         url=ovirt_url,
-        auth=HTTPBasicAuth(username, password),
         verify="ca.pem",
         headers=headers
     )
@@ -33,9 +29,8 @@ def get_api(url: str):
     return private_url_response_xml.text
 
 
-def post_api(url: str, headers):
+def post_api(url: str, xml,  headers):
     ovirt_url = url
-    xml = """<?xml version='1.0' encoding='utf-8'?><action/>"""
     private_url_response_xml = requests.post(
         url=ovirt_url,
         verify="ca.pem",
@@ -47,23 +42,8 @@ def post_api(url: str, headers):
     return private_url_response_xml.status_code
 
 
-
-def snapshot_api(url: str, headers):
-    ovirt_url = url
-    xml = """<?xml version='1.0' encoding='utf-8'?><snapshot><description>vm snapshot</description></snapshot>"""
-    private_url_response_xml = requests.post(
-        url=ovirt_url,
-        verify="ca.pem",
-        headers=headers,
-        data=xml
-    )
-
-    # Print xml
-    return private_url_response_xml
-
-
-def find_vm(vm_name: str):
-    xml_string = get_api(f"{API_URL}/vms")
+def find_vm(vm_name: str, headers):
+    xml_string = get_api(f"{API_URL}/vms", headers)
     root = ET.ElementTree(ET.fromstring(xml_string))
     all_vm = root.findall('vm')
     vid = None
@@ -88,11 +68,12 @@ def main():
         'Content-Type': 'application/xml'
     }
 
-    vid = find_vm(vm_name)         
+    vid = find_vm(vm_name, headers)         
     
-    shutdown_action = snapshot_api(get_url_params(vid, action), headers)
+    (url, xml) = get_url_xml(vid, action)
+    action_result = post_api(url, xml, headers)
 
-    print(shutdown_action)
+    print(action_result)
   
     
 if __name__ == "__main__":
