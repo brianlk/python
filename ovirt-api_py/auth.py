@@ -1,3 +1,4 @@
+
 import json
 import os
 import requests
@@ -20,8 +21,8 @@ PARAMS = {
 
 class Auth:
     
-    file_path = f"/tmp/access_token_{os.environ.get('MANAGER_FQDN')}.ovirt"
-    oAuth_URL = f"https://{os.environ.get('MANAGER_FQDN')}/ovirt-engine/sso/oauth/token"
+    file_path = f"/tmp/access_token_{os.environ.get('OLVM_FQDN')}.ovirt"
+    oAuth_URL = f"https://{os.environ.get('OLVM_FQDN')}/ovirt-engine/sso/oauth/token"
     
     
     @staticmethod

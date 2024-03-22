@@ -4,6 +4,7 @@
 
 import argparse
 import json
+import os
 
 from auth import Auth
 from maps import get_url_xml
@@ -11,6 +12,10 @@ from ovirt import oVirtVM
 
 
 def main():
+    if not os.environ.get('OLVM_FQDN'):
+        print("Error: environment OLVM_FQDN does not exist.")
+        exit()
+        
     # Open arguement choices file
     with open("choices.json") as c:
         choices = json.load(c)

@@ -1,8 +1,6 @@
 
 import xml.etree.ElementTree as ET
-import os
 import requests
-import urllib.parse
 
 from maps import get_api_url
 
@@ -15,7 +13,7 @@ class oVirtVM:
             'Authorization': f"Bearer {acces_token}",
             'Content-Type': 'application/xml',
             'Accept': 'application/xml'
-        }
+            }
         
         
     def find_vm(self):
@@ -37,10 +35,11 @@ class oVirtVM:
             url=ovirt_url,
             verify="ca.pem",
             headers=self.auth_headers,
-            params={"search": f"name={self.vm_name}", # url encode is done by python library
-                    "case_sensitive": "true"
-                    }  
-        )
+            params={
+                "search": f"name={self.vm_name}", # url encode is done by python library
+                "case_sensitive": "true"
+                }
+            )
         # Print xml
         return private_url_response_xml.text
     
@@ -52,7 +51,7 @@ class oVirtVM:
             verify="ca.pem",
             headers=self.auth_headers,
             data=xml
-        )
+            )
 
         # Print xml
         return private_url_response_xml

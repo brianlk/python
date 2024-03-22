@@ -27,4 +27,4 @@ def get_url_xml(vid, action):
 
 
 def get_api_url():
-    return f"https://{os.environ.get('MANAGER_FQDN')}/ovirt-engine/api"
+    return f"https://{os.environ.get('OLVM_FQDN')}/ovirt-engine/api"
