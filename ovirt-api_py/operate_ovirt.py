@@ -71,13 +71,7 @@ def snapshot_api(url: str):
     return private_url_response_xml
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Operate oVirt')
-    parser.add_argument('--vm_name', required=True)
-    parser.add_argument('--action', required=True)
-    args = parser.parse_args()
-    vm_name = args.vm_name
-    action = args.action
+def find_vm(vm_name: str):
     xml_string = get_api(f"{API_URL}/vms")
     root = ET.ElementTree(ET.fromstring(xml_string))
     all_vm = root.findall('vm')
@@ -85,7 +79,25 @@ def main():
     for v in all_vm:
         if v.find('name').text == vm_name:
             vid = v.get('id')
-            
+            return vid
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Operate oVirt')
+    parser.add_argument('--vm_name', required=True)
+    parser.add_argument('--action', required=True)
+    args = parser.parse_args()
+    vm_name = args.vm_name
+    action = args.action
+    
+    
+    acces_token = Auth.authenticate()
+    headers = {
+        'Authorization': f"Bearer {acces_token}",
+        'Content-Type': 'application/xml'
+    }
+
+    vid = find_vm(vm_name)         
     URL_MAP = {
         "shutdown": f"{API_URL}/vms/{vid}/shutdown",
         "start": f"{API_URL}/vms/{vid}/start",
@@ -106,17 +118,4 @@ def main():
     
     
 if __name__ == "__main__":
-
-    acces_token = Auth.authentication()
-    headers = {
-        'Authorization': f"Bearer {acces_token}",
-        'Content-Type': 'application/xml'
-    }
-    private_url_response_xml = requests.get(
-        url='https://manager2.oc.example/ovirt-engine/api/vms',
-        verify="ca.pem",
-        headers=headers
-    )
-    print(private_url_response_xml.text)
-    exit()
     main()
