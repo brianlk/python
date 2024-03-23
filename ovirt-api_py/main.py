@@ -11,11 +11,7 @@ from maps import get_url_xml
 from ovirt import oVirtVM
 
 
-def main():
-    if not os.environ.get('OLVM_FQDN'):
-        print("Error: environment OLVM_FQDN does not exist.")
-        exit()
-        
+def check_args():
     # Open arguement choices file
     with open("choices.json") as c:
         choices = json.load(c)
@@ -23,7 +19,16 @@ def main():
     parser.add_argument('--vm_name', required=True)
     parser.add_argument('--action', required=True, choices=choices['actions'])
     parser.add_argument('--debug', required=False)
-    args = parser.parse_args()
+
+    return parser.parse_args()
+
+
+def main():
+    if not os.environ.get('OLVM_FQDN'):
+        print("Error: environment OLVM_FQDN does not exist.")
+        exit()
+        
+    args = check_args()
     vm_name = args.vm_name
     action = args.action
     # Get the oAuth access token
