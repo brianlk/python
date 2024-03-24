@@ -7,3 +7,5 @@
     source venv/bin/activate
     
     python3 main.py
+
+3. Files will be downloaded in the current directory
