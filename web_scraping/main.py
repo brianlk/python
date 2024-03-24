@@ -40,8 +40,8 @@ def main():
             url_array.append(
                 {"name": name, "url": replaced_url}
             )
-    pool = Pool(10)
     # Process using multithreading
+    pool = Pool(10)
     pool.map(process, url_array)
 
 
