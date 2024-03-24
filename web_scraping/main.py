@@ -20,11 +20,11 @@ for t in a_tags:
     hs = t.get('href')
     if 'mp3.php?' in hs:
         url = f'https://www.hec.org.hk{hs}'
-        xxx = url.replace('桌前默想', '%E6%A1%8C%E5%89%8D%E9%BB%98%E6%83%B3').replace(' ', '%20')
+        replaced_url = url.replace('桌前默想', '%E6%A1%8C%E5%89%8D%E9%BB%98%E6%83%B3').replace(' ', '%20')
         name = re.sub(r'MP3', '', t.text)
         name = re.sub(r'講員:胡恩德.*經文:','_', name)
         name = re.sub(r'^\s', '', name)
-        mp3file = urllib.request.urlopen(xxx)
+        mp3file = urllib.request.urlopen(replaced_url)
         print(name)
         with open(f'{name}.mp3', 'wb') as output:
             output.write(mp3file.read())
