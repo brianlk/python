@@ -28,6 +28,7 @@ def main():
         if 'mp3.php?' in hs:
             url = f'https://www.hec.org.hk{hs}'
             replaced_url = url.replace('桌前默想', '%E6%A1%8C%E5%89%8D%E9%BB%98%E6%83%B3').replace(' ', '%20')
+            # Use regexp to modify the mp3 filename
             name = re.sub(r'MP3', '', t.text)
             name = re.sub(r'講員:胡恩德.*經文:','_', name)
             name = re.sub(r'^\s', '', name)
