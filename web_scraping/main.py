@@ -12,7 +12,7 @@ def process(data):
     return True
 
 
-def main():
+def get_a_tags():
     # Opening the html file
     HTMLFile = open(r"table.html", "r")
     # Reading the file
@@ -21,9 +21,14 @@ def main():
     soup = BeautifulSoup(index, 'html.parser')
     # Get the tag a
     a_tags = soup.find_all('a')
+
+    return a_tags
+
+
+def main():
     #  List stores results
     url_array = []
-    for t in a_tags:
+    for t in get_a_tags():
         hs = t.get('href')
         if 'mp3.php?' in hs:
             url = f'https://www.hec.org.hk{hs}'
