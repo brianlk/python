@@ -6,9 +6,9 @@ import argparse
 import json
 import os
 
-from auth import Auth
-from maps import get_url_xml
-from ovirt import oVirtVM
+from api_libs.auth import Auth
+from api_libs.maps import get_url_xml
+from api_libs.ovirt import oVirtVM
 
 
 def check_args():

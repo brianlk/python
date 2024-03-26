@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import requests
 
 # from auth import Auth
-from maps import get_api_url
+from api_libs.maps import get_api_url
 
 
 class oVirtVM:

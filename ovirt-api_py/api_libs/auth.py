@@ -5,8 +5,8 @@ import requests
 import os.path
 import time
 
-from ovirt import oVirtVM
-from maps import get_api_url
+from api_libs.ovirt import oVirtVM
+from api_libs.maps import get_api_url
 
 HEADERS = {
     'Content-Type': 'application/x-www-form-urlencoded',
