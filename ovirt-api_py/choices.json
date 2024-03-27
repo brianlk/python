@@ -5,6 +5,7 @@
         "shutdown",
         "snapshot",
         "poweroff",
-        "suspend"
+        "suspend",
+        "delete"
     ]
 }

@@ -49,13 +49,25 @@ class oVirtVM:
         return private_url_response_xml
     
     
-    def post_api(self, url: str, xml):
+    def post_api(self, url: str, xml: str):
         ovirt_url = url
         private_url_response_xml = requests.post(
             url=ovirt_url,
             verify="ca.pem",
             headers=self.auth_headers,
             data=xml
+            )
+
+        # Print xml
+        return private_url_response_xml
+    
+    
+    def delete_api(self, url: str, xml: str):
+        ovirt_url = url
+        private_url_response_xml = requests.delete(
+            url=ovirt_url,
+            verify="ca.pem",
+            headers=self.auth_headers,
             )
 
         # Print xml

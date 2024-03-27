@@ -13,6 +13,7 @@ def get_url_xml(vid, action):
         "snapshot": f"{api_url}/vms/{vid}/snapshots",
         "poweroff": f"{api_url}/vms/{vid}/stop",
         "suspend": f"{api_url}/vms/{vid}/suspend",
+        "delete": f"{api_url}/vms/{vid}",
     }
     
     xml_map = {
@@ -21,6 +22,7 @@ def get_url_xml(vid, action):
         "snapshot": f"{XML_HEADER}<snapshot><description>vm snapshot</description></snapshot>",
         "poweroff": f"{XML_HEADER}<action><force>true</force></action>",
         "suspend": f"{XML_HEADER}<action/>",
+        "delete": "",
     }
     
     try:
